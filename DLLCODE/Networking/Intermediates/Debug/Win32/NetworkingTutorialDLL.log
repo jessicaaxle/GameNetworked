@@ -1,0 +1,19 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(437,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(438,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  pch.cpp
+  Client.cpp
+  DLL.cpp
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Client.h(1,1): warning C4005:  '_CRT_SECURE_NO_WARNINGS': macro redefinition
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Client.h(1,1): warning C4005: C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\pch.cpp: note: see previous definition of '_CRT_SECURE_NO_WARNINGS'
+  dllmain.cpp
+  Server.cpp
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Client.h(1,1): warning C4005:  '_CRT_SECURE_NO_WARNINGS': macro redefinition
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Client.h(1,1): warning C4005: C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\pch.cpp: note: see previous definition of '_CRT_SECURE_NO_WARNINGS'
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Client.h(1,1): warning C4005:  '_CRT_SECURE_NO_WARNINGS': macro redefinition
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Client.h(1,1): warning C4005: C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\pch.cpp: note: see previous definition of '_CRT_SECURE_NO_WARNINGS'
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Server.cpp(117,21): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Server.cpp(182,20): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Server.cpp(201,20): warning C4018:  '<': signed/unsigned mismatch
+  Generating Code...
+C:\Users\jessi\Desktop\3rd year\GDW3New\GDW3\Native_C++\Networking\Server.cpp(212,20): warning C4018:  '<': signed/unsigned mismatch
+LINK : fatal error LNK1168: cannot open ..\..\Assets\Plugins\NetworkingTutorialDLL.dll for writing
