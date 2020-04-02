@@ -249,6 +249,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerOne: {fileID: 855140182}
   NetworkingManager: {fileID: 1681406036}
+  ball: {fileID: 4928278628319818909, guid: f4a34c46a962dc649ae915e8e5cae6bd, type: 3}
+  spawn: {fileID: 855140187}
+  thrust: 100
 --- !u!136 &855140184
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -384,6 +387,7 @@ GameObject:
   - component: {fileID: 1750360718}
   - component: {fileID: 1750360717}
   - component: {fileID: 1750360716}
+  - component: {fileID: 1750360719}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -456,6 +460,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1750360719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750360715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac34dcee7c533146ab5ed05e63709e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 855140187}
+  smoothFactor: 0.18
+  lookAtPlayer: 0
+  rotateAroundPlayer: 1
+  rotationSpeed: 2
 --- !u!1 &1868225860
 GameObject:
   m_ObjectHideFlags: 0

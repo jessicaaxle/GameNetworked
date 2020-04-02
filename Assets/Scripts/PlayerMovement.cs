@@ -9,6 +9,11 @@ public class PlayerMovement : MonoBehaviour
 
     string msg;
 
+    //Shooting Stuff
+    public GameObject ball;
+    public Transform spawn;
+    public float thrust;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -41,6 +46,16 @@ public class PlayerMovement : MonoBehaviour
             playerOne.transform.Translate(0.0f, 0.0f, 0.1f);
             msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
             NetworkingManager.sendCurrPos(msg);
+        }
+
+        //Left click
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject clone;
+
+            clone = (GameObject)Instantiate(ball, spawn.position, Quaternion.Euler(0f, 90f, 0f));
+
+            clone.GetComponent<Rigidbody>().AddForce(transform.forward * thrust);
         }
     }
 }
