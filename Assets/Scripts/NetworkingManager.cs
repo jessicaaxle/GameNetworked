@@ -78,6 +78,11 @@ public class NetworkingManager : MonoBehaviour
     public GameObject userParent;
     public InputField textinput;
 
+    public GameObject player2;
+    public static int sceneID = 2;
+    public static float x;
+    public static float z;
+
     private static bool mutex = false;
     static List<MsgToPopulate> msgs = new List<MsgToPopulate>();
     static List<ClientConnectionData> clients = new List<ClientConnectionData>();
@@ -95,31 +100,45 @@ public class NetworkingManager : MonoBehaviour
         InitDLLFunctions();
 
         InitDLL(Plugin_Functions);
+
+        if(sceneID == 2)
+        {
+            StartServer();
+        }
     }
 
     private void Update()
     {
-        mutexCounter += Time.fixedDeltaTime;
-        activityCounter += Time.fixedDeltaTime;
-
-        if (mutexCounter >= 0.5f)
+        if (sceneID == 1)
         {
-            mutex = true;
-
-            UpdateData();
-
-            mutex = false;
+            mutexCounter += Time.fixedDeltaTime;
+            activityCounter += Time.fixedDeltaTime;
+       
+            if (mutexCounter >= 0.5f)
+            {
+                mutex = true;
+       
+                UpdateData();
+       
+                mutex = false;
+            }
+       
+            if (activityCounter >= 10.0f)
+            {
+                SendPacketToServer("s;" + user.id.ToString() + ";IDLE");
+                activityCounter = 0;
+            }
+       
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                SendCurrentMessage();
+            }
         }
-
-        if (activityCounter >= 10.0f)
+       
+        if (sceneID == 2)
         {
-            SendPacketToServer("s;" + user.id.ToString() + ";IDLE");
-            activityCounter = 0;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            SendCurrentMessage();
+            Debug.Log("Game"); 
+            updateMove();
         }
     }
 
@@ -156,17 +175,21 @@ public class NetworkingManager : MonoBehaviour
             }
         }
     }
-
+    public void updateMove()
+    {
+        Debug.Log("WORKING" + x + " " + z);
+        player2.transform.position = new Vector3(x, 0, z);
+    }
     // Init the server
     public void StartServer()
     {
-        InitServer("127.0.0.1", 8888);
+        InitServer("127.0.0.1", 5000);
     }
 
     // Init the client
     public void StartClient()
     {
-        InitClient("127.0.0.1", 8888, "Client_0");
+        InitClient("127.0.0.1", 5000, "Client_0");
     }
 
     // Where we'll process incoming messages
@@ -233,16 +256,28 @@ public class NetworkingManager : MonoBehaviour
 
                     break;
                 }
+            case 'v':
+                {
+                    Debug.Log("HEY");
+                    string[] ar = p.Split(';');
+                    x = float.Parse(ar[1]);
+                    z = float.Parse(ar[2]);
+
+                    //Debug.Log( "WORKING"+ x + " " + z) ;
+                    ////string msg = ar[2];
+                    break;
+                }
         }
 
     }
 
-    public void sendCurrPos(string message)
-    {
-        // string msg;
-        // msg = player.transform.position.x.ToString() + "@" + player.transform.position.z.ToString();
-        SendPacketToServerMove(message);
-    }
+  //public void sendCurrPos(string message)
+  //{
+  //    // string msg;
+  //    // msg = player.transform.position.x.ToString() + "@" + player.transform.position.z.ToString();
+  //    SendPacketToServerMove(message);
+  //}
+
     public void SendCurrentMessage()
     {
         SendPacketToServer("m;" + user.id.ToString() + ";" + textinput.text);

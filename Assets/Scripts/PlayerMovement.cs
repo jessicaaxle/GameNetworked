@@ -27,25 +27,25 @@ public class PlayerMovement : MonoBehaviour
         {
             playerOne.transform.Translate(0.1f, 0.0f, 0.0f);
             msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
-            NetworkingManager.sendCurrPos(msg);
+            NetworkingManager.SendPacketToServer(msg);
         }
         if (Input.GetKey(KeyCode.S))
         {
             playerOne.transform.Translate(-0.1f, 0.0f, 0.0f);
             msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
-            NetworkingManager.sendCurrPos(msg);
+            NetworkingManager.SendPacketToServer(msg);
         }
         if (Input.GetKey(KeyCode.A))
         {
             playerOne.transform.Translate(0.0f, 0.0f, -0.1f);
             msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
-            NetworkingManager.sendCurrPos(msg);
+            NetworkingManager.SendPacketToServer(msg);
         }
         if (Input.GetKey(KeyCode.D))
         {
             playerOne.transform.Translate(0.0f, 0.0f, 0.1f);
             msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
-            NetworkingManager.sendCurrPos(msg);
+            NetworkingManager.SendPacketToServer(msg);
         }
 
         //Left click

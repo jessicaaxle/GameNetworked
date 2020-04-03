@@ -356,7 +356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8717d09b56d7d3f42b69cc822313b9bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player2: {fileID: 2137471156}
   textboxPrefab: {fileID: 0}
   textboxParent: {fileID: 0}
   userPrefab: {fileID: 0}
