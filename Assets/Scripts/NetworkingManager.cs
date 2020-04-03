@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -79,7 +79,7 @@ public class NetworkingManager : MonoBehaviour
     public InputField textinput;
 
     public GameObject player2;
-    public static int sceneID = 2;
+    public static int sceneID = 1;
     public static float x;
     public static float z;
 
@@ -101,10 +101,10 @@ public class NetworkingManager : MonoBehaviour
 
         InitDLL(Plugin_Functions);
 
-        if(sceneID == 2)
-        {
-            StartServer();
-        }
+       // if(sceneID == 2)
+       // {
+       //     StartServer();
+       // }
     }
 
     private void Update()
@@ -191,6 +191,11 @@ public class NetworkingManager : MonoBehaviour
     public void StartClient()
     {
         InitClient("127.0.0.1", 54000, "Client_0");
+    }
+    public void startGame()
+    {
+        SceneManager.LoadScene("Game");
+        sceneID++;
     }
 
     // Where we'll process incoming messages
