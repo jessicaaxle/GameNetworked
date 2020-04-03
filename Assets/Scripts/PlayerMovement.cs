@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         {
             playerOne.transform.Translate(0.0f, 0.0f, -0.1f);
             msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
-            NetworkingManager.sendCurrPos(msg);
+           NetworkingManager.sendCurrPos(msg);
         }
         if (Input.GetKey(KeyCode.D))
         {
