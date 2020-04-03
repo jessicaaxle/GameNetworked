@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public struct CS_to_Plugin_Functions
 {
     public IntPtr MsgReceivedPtr;
@@ -62,12 +61,6 @@ public class NetworkingManager : MonoBehaviour
     public delegate void SendPacketToServerDelegateMove(string msg);
     public SendPacketToServerDelegateMove SendPacketToServerMove;
 
-    //VARIABLES
-    public static float x;
-    public static float z;
-
-    public GameObject player2;
-
     // MUST be called before you call any of the DLL functions
     private void InitDLLFunctions()
     {
@@ -75,7 +68,6 @@ public class NetworkingManager : MonoBehaviour
         InitServer = ManualPluginImporter.GetDelegate<InitServerDelegate>(Plugin_Handle, "InitServer");
         InitClient = ManualPluginImporter.GetDelegate<InitClientDelegate>(Plugin_Handle, "InitClient");
         SendPacketToServer = ManualPluginImporter.GetDelegate<SendPacketToServerDelegate>(Plugin_Handle, "SendPacketToServer");
-        SendPacketToServerMove = ManualPluginImporter.GetDelegate<SendPacketToServerDelegateMove>(Plugin_Handle, "SendPacketToServerMove");
         Cleanup = ManualPluginImporter.GetDelegate<CleanupDelegate>(Plugin_Handle, "Cleanup");
     }
 
@@ -85,8 +77,6 @@ public class NetworkingManager : MonoBehaviour
     public GameObject userPrefab;
     public GameObject userParent;
     public InputField textinput;
-
-    //public GameObject player;
 
     private static bool mutex = false;
     static List<MsgToPopulate> msgs = new List<MsgToPopulate>();
@@ -105,35 +95,32 @@ public class NetworkingManager : MonoBehaviour
         InitDLLFunctions();
 
         InitDLL(Plugin_Functions);
-
-        StartServer();
     }
 
     private void Update()
     {
-        //mutexCounter += Time.fixedDeltaTime;
-        //activityCounter += Time.fixedDeltaTime;
-        //
-        //if (mutexCounter >= 0.5f)
-        //{
-        //    mutex = true;
-        //
-        //    UpdateData();
-        //
-        //    mutex = false;
-        //}
-        //
-        //if (activityCounter >= 10.0f)
-        //{
-        //    SendPacketToServer("s;" + user.id.ToString() + ";IDLE");
-        //    activityCounter = 0;
-        //}
-        //
-        //if (Input.GetKeyDown(KeyCode.Return))
-        //{
-        //    SendCurrentMessage();
-        //}
-        updateMove();
+        mutexCounter += Time.fixedDeltaTime;
+        activityCounter += Time.fixedDeltaTime;
+
+        if (mutexCounter >= 0.5f)
+        {
+            mutex = true;
+
+            UpdateData();
+
+            mutex = false;
+        }
+
+        if (activityCounter >= 10.0f)
+        {
+            SendPacketToServer("s;" + user.id.ToString() + ";IDLE");
+            activityCounter = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            SendCurrentMessage();
+        }
     }
 
     // Update client and message data
@@ -170,22 +157,16 @@ public class NetworkingManager : MonoBehaviour
         }
     }
 
-    public void updateMove()
-    {
-        Debug.Log("WORKING" + x + " " + z);
-        player2.transform.position = new Vector3(x, 0, z);
-    }
-
     // Init the server
     public void StartServer()
     {
-        InitServer("127.0.0.1", 54000);
+        InitServer("127.0.0.1", 8888);
     }
 
     // Init the client
     public void StartClient()
     {
-        InitClient("127.0.0.1", 54000, "Client_0");
+        InitClient("127.0.0.1", 8888, "Client_0");
     }
 
     // Where we'll process incoming messages
@@ -203,7 +184,6 @@ public class NetworkingManager : MonoBehaviour
             // Got an ID packet
             case 'i':
                 {
-                    Debug.Log("Im in I");
                     string[] ar = p.Split(';');
                     user.id = int.Parse(ar[1]);
                     // may want to use TryParse
@@ -253,26 +233,9 @@ public class NetworkingManager : MonoBehaviour
 
                     break;
                 }
-            case 'v':
-                {
-                    Debug.Log("HEY");
-                    string[] ar = p.Split(';');
-                    x = float.Parse(ar[1]);
-                    z = float.Parse(ar[2]);
-
-                    //Debug.Log( "WORKING"+ x + " " + z) ;
-                    ////string msg = ar[2];
-                    break;
-                }
         }
 
     }
-
-    // public static void MoveRecieve(IntPtr p_in)
-    // {
-    //     string p = Marshal.PtrToStringAnsi(p_in);
-    // }
-    //process movement recieved
 
     public void sendCurrPos(string message)
     {
@@ -280,7 +243,6 @@ public class NetworkingManager : MonoBehaviour
         // msg = player.transform.position.x.ToString() + "@" + player.transform.position.z.ToString();
         SendPacketToServerMove(message);
     }
-
     public void SendCurrentMessage()
     {
         SendPacketToServer("m;" + user.id.ToString() + ";" + textinput.text);
