@@ -1448,7 +1448,8 @@ MonoBehaviour:
     type: 3}
   userParent: {fileID: 483135895}
   textinput: {fileID: 483135897}
-  player2: {fileID: 0}
+  nameInput: {fileID: 735431740}
+  player2: {fileID: 5852106317026421147, guid: 1270d3ae73317c049a40a4f07bed4386, type: 3}
 --- !u!4 &1274229520
 Transform:
   m_ObjectHideFlags: 0

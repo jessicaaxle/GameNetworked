@@ -91,10 +91,20 @@ public class NetworkingManager : MonoBehaviour
 
     private float mutexCounter = 0;
     private float activityCounter = 0;
-
+    private static NetworkingManager Instance;
     // Init the DLL
     private void Awake()
     {
+        if(Instance==null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         Plugin_Handle = ManualPluginImporter.OpenLibrary(Application.dataPath + path);
         Plugin_Functions.Init();
 
