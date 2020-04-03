@@ -251,7 +251,7 @@ MonoBehaviour:
   NetworkingManager: {fileID: 1681406036}
   ball: {fileID: 4928278628319818909, guid: f4a34c46a962dc649ae915e8e5cae6bd, type: 3}
   spawn: {fileID: 855140187}
-  thrust: 100
+  thrust: 1000
 --- !u!136 &855140184
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -454,7 +454,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1750360715}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 9, y: 1, z: 0.57}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
