@@ -111,6 +111,7 @@ public class NetworkingManager : MonoBehaviour
     {
         if (sceneID == 1)
         {
+            Debug.Log("CHAT");
             mutexCounter += Time.fixedDeltaTime;
             activityCounter += Time.fixedDeltaTime;
        
@@ -138,7 +139,7 @@ public class NetworkingManager : MonoBehaviour
         if (sceneID == 2)
         {
             Debug.Log("Game"); 
-            updateMove();
+            UpdateMove();
         }
     }
 
@@ -175,7 +176,7 @@ public class NetworkingManager : MonoBehaviour
             }
         }
     }
-    public void updateMove()
+    public void UpdateMove()
     {
         Debug.Log("WORKING" + x + " " + z);
         player2.transform.position = new Vector3(x, 0, z);
@@ -183,13 +184,13 @@ public class NetworkingManager : MonoBehaviour
     // Init the server
     public void StartServer()
     {
-        InitServer("127.0.0.1", 5000);
+        InitServer("127.0.0.1", 54000);
     }
 
     // Init the client
     public void StartClient()
     {
-        InitClient("127.0.0.1", 5000, "Client_0");
+        InitClient("127.0.0.1", 54000, "Client_0");
     }
 
     // Where we'll process incoming messages

@@ -361,6 +361,7 @@ MonoBehaviour:
   userPrefab: {fileID: 0}
   userParent: {fileID: 0}
   textinput: {fileID: 0}
+  player2: {fileID: 2137471156}
 --- !u!4 &1681406037
 Transform:
   m_ObjectHideFlags: 0
