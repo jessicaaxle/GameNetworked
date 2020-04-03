@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        NetworkingManager.StartClient();
+        //NetworkingManager.StartClient();
     }
 
     // Update is called once per frame

@@ -204,10 +204,10 @@ void Server::BroadcastMessage(const char* msg, const sockaddr_in clientAddrExcep
 	SERVERLOG << "Sending: " << msg << std::endl;
 	for (int i = 0; i < clients.size(); i++)
 	{
-		//if (clients[i].addr.sin_port != clientAddrExcept.sin_port)
-		//{
+		if (clients[i].addr.sin_port != clientAddrExcept.sin_port)
+		{
 			SendPacketToTargetClient(msg, clients[i].addr);
-		//}
+		}
 	}
 }
 

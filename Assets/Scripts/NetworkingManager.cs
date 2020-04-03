@@ -77,6 +77,7 @@ public class NetworkingManager : MonoBehaviour
     public GameObject userPrefab;
     public GameObject userParent;
     public InputField textinput;
+    public InputField nameInput;
 
     public GameObject player2;
     public static int sceneID = 1;
@@ -126,6 +127,7 @@ public class NetworkingManager : MonoBehaviour
        
             if (activityCounter >= 10.0f)
             {
+                user.status = "IDLE";
                 SendPacketToServer("s;" + user.id.ToString() + ";IDLE");
                 activityCounter = 0;
             }
@@ -172,7 +174,14 @@ public class NetworkingManager : MonoBehaviour
                 {
                     clients[i].go = Instantiate(userPrefab, userParent.transform).GetComponent<UserElement>();
                 }
-                clients[i].go.UpdateUser(clients[i].name, clients[i].status);
+                if(i ==0)
+                {
+                    clients[i].go.UpdateUser(user.name, user.status);
+                }
+                else
+                {
+                    clients[i].go.UpdateUser(clients[i].name, clients[i].status);
+                }
             }
         }
     }
@@ -190,7 +199,8 @@ public class NetworkingManager : MonoBehaviour
     // Init the client
     public void StartClient()
     {
-        InitClient("127.0.0.1", 54000, "Client_0");
+        InitClient("127.0.0.1", 54000, nameInput.text);
+        user.name = nameInput.text;
     }
     public void startGame()
     {
@@ -215,6 +225,14 @@ public class NetworkingManager : MonoBehaviour
                 {
                     string[] ar = p.Split(';');
                     user.id = int.Parse(ar[1]);
+
+                    ClientConnectionData temp = new ClientConnectionData();
+
+                    temp.name = user.name;
+                    temp.status = user.status;
+                    temp.id = user.id;
+
+                    clients.Add(temp);
                     // may want to use TryParse
 
                     break;
@@ -283,9 +301,18 @@ public class NetworkingManager : MonoBehaviour
   //    // msg = player.transform.position.x.ToString() + "@" + player.transform.position.z.ToString();
   //    SendPacketToServerMove(message);
   //}
-
+  public void outClientNum()
+    {
+        Debug.Log(clients.Count);
+    }
     public void SendCurrentMessage()
     {
+        MsgToPopulate msgp = new MsgToPopulate();
+        msgp.msg = textinput.text;
+        msgp.id = user.id;
+        msgs.Add(msgp);
+
+        user.status = "CHATTING";
         SendPacketToServer("m;" + user.id.ToString() + ";" + textinput.text);
         SendPacketToServer("s;" + user.id.ToString() + ";CHATTING");
         textinput.text = "";
@@ -295,6 +322,7 @@ public class NetworkingManager : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        SendPacketToServer("s;" + user.id.ToString() + ";OFFLINE");
         Cleanup();
         ManualPluginImporter.CloseLibrary(Plugin_Handle);
     }
