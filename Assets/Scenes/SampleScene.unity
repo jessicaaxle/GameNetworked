@@ -633,7 +633,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 0, y: 8e-45, z: 2.783e-42, w: 1.04e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -1441,6 +1441,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8717d09b56d7d3f42b69cc822313b9bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ball: {fileID: 4928278628319818909, guid: f4a34c46a962dc649ae915e8e5cae6bd, type: 3}
+  spawn: {fileID: 945827250784651205, guid: 1270d3ae73317c049a40a4f07bed4386, type: 3}
+  thrust: 10000
   textboxPrefab: {fileID: 269732308361954359, guid: f157bad1edba7b64fb54030557a67611,
     type: 3}
   textboxParent: {fileID: 483135898}
@@ -1449,6 +1452,7 @@ MonoBehaviour:
   userParent: {fileID: 483135895}
   textinput: {fileID: 483135897}
   nameInput: {fileID: 735431740}
+  player: {fileID: 722602142386650886, guid: 6ac3c35b1987c65428ca80568e728bb5, type: 3}
   player2: {fileID: 5852106317026421147, guid: 1270d3ae73317c049a40a4f07bed4386, type: 3}
 --- !u!4 &1274229520
 Transform:

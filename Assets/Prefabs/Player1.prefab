@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4429781871502872128}
   - component: {fileID: 5784567262985035782}
   - component: {fileID: 7594120719784503597}
+  - component: {fileID: 5389512314110141350}
   - component: {fileID: 5466157449634163664}
   m_Layer: 0
   m_Name: Player1
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722602142386650886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 45.39988, y: 0, z: 216.404}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -80,6 +81,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5389512314110141350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722602142386650886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc363b1634fdbd243b96e4783b383e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 722602142386650886}
+  ball: {fileID: 4928278628319818909, guid: f4a34c46a962dc649ae915e8e5cae6bd, type: 3}
+  spawn: {fileID: 4429781871502872128}
+  thrust: 10000
 --- !u!136 &5466157449634163664
 CapsuleCollider:
   m_ObjectHideFlags: 0

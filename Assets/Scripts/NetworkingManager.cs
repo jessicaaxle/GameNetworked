@@ -61,6 +61,13 @@ public class NetworkingManager : MonoBehaviour
     public delegate void SendPacketToServerDelegateMove(string msg);
     public SendPacketToServerDelegateMove SendPacketToServerMove;
 
+
+    //Shooting Stuff
+    public GameObject ball;
+    public Transform spawn;
+    public float thrust;
+
+
     // MUST be called before you call any of the DLL functions
     private void InitDLLFunctions()
     {
@@ -79,10 +86,18 @@ public class NetworkingManager : MonoBehaviour
     public InputField textinput;
     public InputField nameInput;
 
+    public GameObject player;
     public GameObject player2;
+    public Transform prefab; 
+
     public static int sceneID = 1;
-    public static float x;
-    public static float z;
+    public static float x = 0;
+    public static float z =0;
+    public static string msg;
+    //
+    //public GameObject playerPrefab;
+    //public GameObject pawnPrefab;
+    //public Transform pawnParent;
 
     private static bool mutex = false;
     static List<MsgToPopulate> msgs = new List<MsgToPopulate>();
@@ -122,7 +137,7 @@ public class NetworkingManager : MonoBehaviour
     {
         if (sceneID == 1)
         {
-            Debug.Log("CHAT");
+            //Debug.Log("CHAT");
             mutexCounter += Time.fixedDeltaTime;
             activityCounter += Time.fixedDeltaTime;
        
@@ -150,7 +165,45 @@ public class NetworkingManager : MonoBehaviour
        
         if (sceneID == 2)
         {
-            Debug.Log("Game"); 
+            //SendCurrPos();
+            
+            //UpdateMove();
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                player.transform.Translate(0.1f, 0.0f, 0.0f);
+                msg = ("q;" + user.id.ToString() + ";" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString());
+                SendCurrPos(msg);
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                player.transform.Translate(-0.1f, 0.0f, 0.0f);
+                msg = ("q;" + user.id.ToString() + ";" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString());
+                SendCurrPos(msg);
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                player.transform.Translate(0.0f, 0.0f, -0.1f);
+                msg = ("q;" + user.id.ToString() + ";" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString());
+                SendCurrPos(msg);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                player.transform.Translate(0.0f, 0.0f, 0.1f);
+                msg = ("q;" + user.id.ToString() + ";" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString());
+                SendCurrPos(msg);
+            }
+
+            //Left click
+            if (Input.GetMouseButtonDown(0))
+            {
+                GameObject clone;
+
+                clone = (GameObject)Instantiate(ball, spawn.position, Quaternion.Euler(0f, 90f, 0f));
+
+                clone.GetComponent<Rigidbody>().AddForce(transform.forward * thrust);
+            }
+
             UpdateMove();
         }
     }
@@ -197,8 +250,10 @@ public class NetworkingManager : MonoBehaviour
     }
     public void UpdateMove()
     {
-        Debug.Log("WORKING" + x + " " + z);
-        player2.transform.position = new Vector3(x, 0, z);
+        Debug.Log("WORKINGUPDATEMOVE" + x + " " + z);
+        
+        //player = GameObject.Find("Player");
+        //player.transform.position = new Vector3(x, 0, z);
     }
     // Init the server
     public void StartServer()
@@ -216,6 +271,7 @@ public class NetworkingManager : MonoBehaviour
     {
         SceneManager.LoadScene("Game");
         sceneID++;
+        Instantiate(player2, prefab.position, Quaternion.identity);
     }
 
     // Where we'll process incoming messages
@@ -290,12 +346,13 @@ public class NetworkingManager : MonoBehaviour
 
                     break;
                 }
-            case 'v':
+            case 'q':
                 {
-                    Debug.Log("HEY");
+                    //Debug.Log("HEY");
                     string[] ar = p.Split(';');
-                    x = float.Parse(ar[1]);
-                    z = float.Parse(ar[2]);
+                    int id = int.Parse(ar[1]);
+                    x = float.Parse(ar[2]);
+                    z = float.Parse(ar[3]);
 
                     //Debug.Log( "WORKING"+ x + " " + z) ;
                     ////string msg = ar[2];
@@ -305,16 +362,16 @@ public class NetworkingManager : MonoBehaviour
 
     }
 
-  //public void sendCurrPos(string message)
-  //{
-  //    // string msg;
-  //    // msg = player.transform.position.x.ToString() + "@" + player.transform.position.z.ToString();
-  //    SendPacketToServerMove(message);
-  //}
-  public void outClientNum()
-    {
-        Debug.Log(clients.Count);
-    }
+  public void SendCurrPos(string message)
+  {
+        // string msg;
+        // msg = player.transform.position.x.ToString() + "@" + player.transform.position.z.ToString();
+        //Debug.Log("SEND MOVE");
+        //SendPacketToServerMove("v;" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString()) ;
+        //msg = "v;" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString();
+       // Debug.Log(msg);
+        SendPacketToServer(msg);
+  }
     public void SendCurrentMessage()
     {
         MsgToPopulate msgp = new MsgToPopulate();
@@ -336,4 +393,6 @@ public class NetworkingManager : MonoBehaviour
         Cleanup();
         ManualPluginImporter.CloseLibrary(Plugin_Handle);
     }
+
+   
 }
