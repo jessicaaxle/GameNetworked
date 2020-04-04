@@ -63,9 +63,9 @@ public class NetworkingManager : MonoBehaviour
 
 
     //Shooting Stuff
-    public GameObject ball;
-    public Transform spawn;
-    public float thrust;
+    //public GameObject ball;
+    //public Transform spawn;
+    //public float thrust;
 
 
     // MUST be called before you call any of the DLL functions
@@ -88,7 +88,6 @@ public class NetworkingManager : MonoBehaviour
 
     public GameObject player;
     public GameObject player2;
-    public Transform prefab; 
 
     public static int sceneID = 1;
     public static float x = 0;
@@ -165,46 +164,35 @@ public class NetworkingManager : MonoBehaviour
        
         if (sceneID == 2)
         {
-            //SendCurrPos();
+            for (int i = 0; i < clients.Count; i++)
+            {
+               
+                if(clients[i].id ==0)
+                {
+                    //Debug.Log("FiRST");
+                    player = GameObject.Find("Player1");
+                    keyboard(player);
+                    SendCurrPos(player);
+
+
+                    //player2 = GameObject.Find("Player2");
+                    //UpdateMove(player2);
+                }
+                
+                if (clients[i].id == 1)
+                {
+                    //Debug.Log("D");
+                   // player = GameObject.Find("Player2");
+                   // keyboard(player);
+                   // SendCurrPos(player);
+
+                    player2 = GameObject.Find("Player1");
+                    UpdateMove(player2);
+                }
+            }
+
+           
             
-            //UpdateMove();
-
-            if (Input.GetKey(KeyCode.W))
-            {
-                player.transform.Translate(0.1f, 0.0f, 0.0f);
-                msg = ("q;" + user.id.ToString() + ";" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString());
-                SendCurrPos(msg);
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                player.transform.Translate(-0.1f, 0.0f, 0.0f);
-                msg = ("q;" + user.id.ToString() + ";" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString());
-                SendCurrPos(msg);
-            }
-            if (Input.GetKey(KeyCode.A))
-            {
-                player.transform.Translate(0.0f, 0.0f, -0.1f);
-                msg = ("q;" + user.id.ToString() + ";" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString());
-                SendCurrPos(msg);
-            }
-            if (Input.GetKey(KeyCode.D))
-            {
-                player.transform.Translate(0.0f, 0.0f, 0.1f);
-                msg = ("q;" + user.id.ToString() + ";" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString());
-                SendCurrPos(msg);
-            }
-
-            //Left click
-            if (Input.GetMouseButtonDown(0))
-            {
-                GameObject clone;
-
-                clone = (GameObject)Instantiate(ball, spawn.position, Quaternion.Euler(0f, 90f, 0f));
-
-                clone.GetComponent<Rigidbody>().AddForce(transform.forward * thrust);
-            }
-
-            UpdateMove();
         }
     }
 
@@ -248,12 +236,11 @@ public class NetworkingManager : MonoBehaviour
             }
         }
     }
-    public void UpdateMove()
+    public void UpdateMove(GameObject p)
     {
-        Debug.Log("WORKINGUPDATEMOVE" + x + " " + z);
-        
-        //player = GameObject.Find("Player");
-        //player.transform.position = new Vector3(x, 0, z);
+      Debug.Log("WORKINGUPDATEMOVE" + x + " " + z);
+      p.transform.position = new Vector3(x, 0, z);
+       
     }
     // Init the server
     public void StartServer()
@@ -271,7 +258,7 @@ public class NetworkingManager : MonoBehaviour
     {
         SceneManager.LoadScene("Game");
         sceneID++;
-        Instantiate(player2, prefab.position, Quaternion.identity);
+        
     }
 
     // Where we'll process incoming messages
@@ -354,6 +341,14 @@ public class NetworkingManager : MonoBehaviour
                     x = float.Parse(ar[2]);
                     z = float.Parse(ar[3]);
 
+                   //for (int i =0; i>clients.Count; i++)
+                   //{
+                   //    if(clients[i].id != id)
+                   //    {
+                   //        updat
+                   //    }
+                   //}
+                   
                     //Debug.Log( "WORKING"+ x + " " + z) ;
                     ////string msg = ar[2];
                     break;
@@ -362,13 +357,13 @@ public class NetworkingManager : MonoBehaviour
 
     }
 
-  public void SendCurrPos(string message)
+  public void SendCurrPos(GameObject p )
   {
         // string msg;
         // msg = player.transform.position.x.ToString() + "@" + player.transform.position.z.ToString();
         //Debug.Log("SEND MOVE");
         //SendPacketToServerMove("v;" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString()) ;
-        //msg = "v;" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString();
+        msg = "q;" + user.id.ToString()+ ";" + p.transform.position.x.ToString() + ";" + p.transform.position.z.ToString();
        // Debug.Log(msg);
         SendPacketToServer(msg);
   }
@@ -394,5 +389,42 @@ public class NetworkingManager : MonoBehaviour
         ManualPluginImporter.CloseLibrary(Plugin_Handle);
     }
 
-   
+   private void keyboard(GameObject p)
+    {
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            p.transform.Translate(0.1f, 0.0f, 0.0f);
+            //msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
+            // NetworkingManager.SendCurrPos(msg);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            p.transform.Translate(-0.1f, 0.0f, 0.0f);
+            // msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
+            // NetworkingManager.SendCurrPos(msg);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            p.transform.Translate(0.0f, 0.0f, -0.1f);
+            //msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
+            //NetworkingManager.SendCurrPos(msg);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            p.transform.Translate(0.0f, 0.0f, 0.1f);
+            //msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
+            //NetworkingManager.SendCurrPos(msg);
+        }
+
+       // //Left click
+       // if (Input.GetMouseButtonDown(0))
+       // {
+       //     GameObject clone;
+       //
+       //     clone = (GameObject)Instantiate(ball, spawn.position, Quaternion.Euler(0f, 90f, 0f));
+       //
+       //     clone.GetComponent<Rigidbody>().AddForce(transform.forward * thrust);
+       // }
+    }
 }
