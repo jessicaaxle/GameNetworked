@@ -243,13 +243,7 @@ public class NetworkingManager : MonoBehaviour
            }
            else
            {
-               //Dead recoking here
                clients[i].playerObj.DeadReckonPosition();
-               //clients[i].velocity = clients[i].currPos - clients[i].prevPos;
-               //clients[i].futurePos = clients[i].currPos + (clients[i].velocity * 0.2f);
-               //
-               //clients[i].playerObj.transform.position = Vector3.Lerp(clients[i].playerObj.transform.position, clients[i].futurePos, Time.deltaTime);
-               //clients[i].playerObj.transform.localPosition = clients[i].newPos;
            }
         }
 
