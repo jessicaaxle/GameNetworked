@@ -26,6 +26,10 @@ public class ClientConnectionData
     public string status;
     public int id;
     public UserElement go;
+    public bool inGame = false;
+    public Dumb playerObj;
+    public int material;
+    public Vector3 lastUpdatePos = new Vector3(0f, 0f, 0f);
 }
 
 public class MsgToPopulate
@@ -89,6 +93,8 @@ public class NetworkingManager : MonoBehaviour
     public GameObject player;
     public GameObject player2;
 
+   
+
     public static int sceneID = 1;
     public static float x = 0;
     public static float z =0;
@@ -106,6 +112,11 @@ public class NetworkingManager : MonoBehaviour
     private float mutexCounter = 0;
     private float activityCounter = 0;
     private static NetworkingManager Instance;
+
+    private void Start()
+    {
+        
+    }
     // Init the DLL
     private void Awake()
     {
@@ -126,10 +137,6 @@ public class NetworkingManager : MonoBehaviour
 
         InitDLL(Plugin_Functions);
 
-       // if(sceneID == 2)
-       // {
-       //     StartServer();
-       // }
     }
 
     private void Update()
@@ -164,35 +171,9 @@ public class NetworkingManager : MonoBehaviour
        
         if (sceneID == 2)
         {
-            for (int i = 0; i < clients.Count; i++)
-            {
-               
-                if(clients[i].id ==0)
-                {
-                    //Debug.Log("FiRST");
-                    player = GameObject.Find("Player1");
-                    keyboard(player);
-                    SendCurrPos(player);
-
-
-                    //player2 = GameObject.Find("Player2");
-                    //UpdateMove(player2);
-                }
-                
-                if (clients[i].id == 1)
-                {
-                    //Debug.Log("D");
-                   // player = GameObject.Find("Player2");
-                   // keyboard(player);
-                   // SendCurrPos(player);
-
-                    player2 = GameObject.Find("Player1");
-                    UpdateMove(player2);
-                }
-            }
-
-           
-            
+            UpdateMove();
+           // keyboard(player);
+            SendCurrPos();
         }
     }
 
@@ -236,11 +217,47 @@ public class NetworkingManager : MonoBehaviour
             }
         }
     }
-    public void UpdateMove(GameObject p)
+    public void UpdateMove()
     {
-      Debug.Log("WORKINGUPDATEMOVE" + x + " " + z);
-      p.transform.position = new Vector3(x, 0, z);
-       
+        //Debug.Log("HI"); 
+        for (int i = 0; i < clients.Count; i++)
+        {
+           if (clients[i].playerObj == null)
+           {
+               if(i==0)
+               {
+                   clients[0].playerObj = Instantiate(player).GetComponent<Dumb>();
+
+               }
+               else
+               {
+                   Debug.Log("i am player2");
+                   //if(clients[i].material == 1)
+                   if(i!=0)
+                    {
+                        clients[i].playerObj = Instantiate(player2).GetComponent<Dumb>();
+
+                    }
+               }
+
+           }
+           else
+           {
+               //Dead recoking here
+               clients[i].playerObj.DeadReckonPosition();
+               //clients[i].velocity = clients[i].currPos - clients[i].prevPos;
+               //clients[i].futurePos = clients[i].currPos + (clients[i].velocity * 0.2f);
+               //
+               //clients[i].playerObj.transform.position = Vector3.Lerp(clients[i].playerObj.transform.position, clients[i].futurePos, Time.deltaTime);
+               //clients[i].playerObj.transform.localPosition = clients[i].newPos;
+           }
+        }
+
+       // velocity = currentPos - prevPos;
+       // futurePos = currentPos + (velocity * UPDATE_INTERVAL);
+       //
+       // p.transform.position = Vector3.Lerp(gameObject.transform.position, futurePos,Time.deltaTime);
+
     }
     // Init the server
     public void StartServer()
@@ -258,6 +275,7 @@ public class NetworkingManager : MonoBehaviour
     {
         SceneManager.LoadScene("Game");
         sceneID++;
+        clients[0].inGame = true;
         
     }
 
@@ -335,38 +353,67 @@ public class NetworkingManager : MonoBehaviour
                 }
             case 'q':
                 {
-                    //Debug.Log("HEY");
                     string[] ar = p.Split(';');
                     int id = int.Parse(ar[1]);
                     x = float.Parse(ar[2]);
                     z = float.Parse(ar[3]);
 
-                   //for (int i =0; i>clients.Count; i++)
-                   //{
-                   //    if(clients[i].id != id)
-                   //    {
-                   //        updat
-                   //    }
-                   //}
-                   
-                    //Debug.Log( "WORKING"+ x + " " + z) ;
-                    ////string msg = ar[2];
+
+                   //UpdateMove()
+                   for (int i =0; i<clients.Count; i++)
+                   {
+                       if(clients[i].id == id)
+                       {
+                            if (!clients[i].inGame)
+                            {
+                                clients[i].inGame = true;
+                            }
+                            else
+                            {
+                                if(clients[i].playerObj != null)
+                                {
+                                   clients[i].playerObj.prevPos = clients[i].playerObj.currPos;
+                                   clients[i].playerObj.currPos = new Vector3(x, 0.0f, z);
+
+                                    
+                                }
+                            }
+                       }
+                   }
                     break;
                 }
+           //case 'x':
+           //    {
+           //        string[] ar = p.Split(';');
+           //        int id = int.Parse(ar[1]);
+           //        int matID = int.Parse(ar[2]);
+           //        for (int i = 0; i < clients.Count; i++)
+           //        {
+           //            if (clients[i].id == id)
+           //            {
+           //                clients[i].material = matID; 
+           //            }
+           //        }
+           //        break;
+            //  }
         }
 
     }
 
-  public void SendCurrPos(GameObject p )
+  public void SendCurrPos()
   {
         // string msg;
         // msg = player.transform.position.x.ToString() + "@" + player.transform.position.z.ToString();
         //Debug.Log("SEND MOVE");
         //SendPacketToServerMove("v;" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString()) ;
-        msg = "q;" + user.id.ToString()+ ";" + p.transform.position.x.ToString() + ";" + p.transform.position.z.ToString();
+        msg = "q;" + user.id.ToString()+ ";" + clients[0].playerObj.transform.position.x.ToString() + ";" + clients[0].playerObj.transform.position.z.ToString();
        // Debug.Log(msg);
         SendPacketToServer(msg);
   }
+    public void sendPlayerMat()
+    {
+        //SendPacketToServer("x;" + user.id.ToString() + ";" + );
+    }
     public void SendCurrentMessage()
     {
         MsgToPopulate msgp = new MsgToPopulate();
@@ -387,44 +434,5 @@ public class NetworkingManager : MonoBehaviour
         SendPacketToServer("s;" + user.id.ToString() + ";OFFLINE");
         Cleanup();
         ManualPluginImporter.CloseLibrary(Plugin_Handle);
-    }
-
-   private void keyboard(GameObject p)
-    {
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            p.transform.Translate(0.1f, 0.0f, 0.0f);
-            //msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
-            // NetworkingManager.SendCurrPos(msg);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            p.transform.Translate(-0.1f, 0.0f, 0.0f);
-            // msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
-            // NetworkingManager.SendCurrPos(msg);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            p.transform.Translate(0.0f, 0.0f, -0.1f);
-            //msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
-            //NetworkingManager.SendCurrPos(msg);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            p.transform.Translate(0.0f, 0.0f, 0.1f);
-            //msg = ("v;" + playerOne.transform.position.x.ToString() + ";" + playerOne.transform.position.z.ToString());
-            //NetworkingManager.SendCurrPos(msg);
-        }
-
-       // //Left click
-       // if (Input.GetMouseButtonDown(0))
-       // {
-       //     GameObject clone;
-       //
-       //     clone = (GameObject)Instantiate(ball, spawn.position, Quaternion.Euler(0f, 90f, 0f));
-       //
-       //     clone.GetComponent<Rigidbody>().AddForce(transform.forward * thrust);
-       // }
     }
 }

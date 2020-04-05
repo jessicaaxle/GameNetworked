@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 8280964757685779301}
   - component: {fileID: 1498069675278107229}
   - component: {fileID: 1609517678528569073}
-  - component: {fileID: 9053050596712200156}
-  - component: {fileID: 7534544491588943988}
+  - component: {fileID: 1377831114137295737}
   m_Layer: 0
-  m_Name: Player2
+  m_Name: Player2Dumb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5852106317026421147}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 50.099808, y: 0, z: -0.3000002}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -96,42 +95,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9053050596712200156
+--- !u!114 &1377831114137295737
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5852106317026421147}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8717d09b56d7d3f42b69cc822313b9bd, type: 3}
+  m_Script: {fileID: 11500000, guid: d9ccaa7dd7138ef43bfd56f0d28718cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 4928278628319818909, guid: f4a34c46a962dc649ae915e8e5cae6bd, type: 3}
-  spawn: {fileID: 945827250784651205}
-  thrust: 1000
-  textboxPrefab: {fileID: 0}
-  textboxParent: {fileID: 0}
-  userPrefab: {fileID: 0}
-  userParent: {fileID: 0}
-  textinput: {fileID: 0}
-  nameInput: {fileID: 0}
-  player: {fileID: 722602142386650886, guid: 6ac3c35b1987c65428ca80568e728bb5, type: 3}
-  player2: {fileID: 5852106317026421147}
---- !u!114 &7534544491588943988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5852106317026421147}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc363b1634fdbd243b96e4783b383e42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 5852106317026421147}
-  ball: {fileID: 4928278628319818909, guid: f4a34c46a962dc649ae915e8e5cae6bd, type: 3}
-  spawn: {fileID: 945827250784651205}
-  thrust: 100000
+  material: 0
+  prevPos: {x: 0, y: 0, z: 0}
+  currPos: {x: 0, y: 0, z: 0}
