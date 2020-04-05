@@ -246,12 +246,6 @@ public class NetworkingManager : MonoBehaviour
                clients[i].playerObj.DeadReckonPosition();
            }
         }
-
-       // velocity = currentPos - prevPos;
-       // futurePos = currentPos + (velocity * UPDATE_INTERVAL);
-       //
-       // p.transform.position = Vector3.Lerp(gameObject.transform.position, futurePos,Time.deltaTime);
-
     }
     // Init the server
     public void StartServer()
@@ -396,18 +390,10 @@ public class NetworkingManager : MonoBehaviour
 
   public void SendCurrPos()
   {
-        // string msg;
-        // msg = player.transform.position.x.ToString() + "@" + player.transform.position.z.ToString();
-        //Debug.Log("SEND MOVE");
-        //SendPacketToServerMove("v;" + player.transform.position.x.ToString() + ";" + player.transform.position.z.ToString()) ;
-        msg = "q;" + user.id.ToString()+ ";" + clients[0].playerObj.transform.position.x.ToString() + ";" + clients[0].playerObj.transform.position.z.ToString();
-       // Debug.Log(msg);
+     
+        msg = "q;" + user.id.ToString()+ ";" + clients[0].playerObj.transform.localPosition.x.ToString() + ";" + clients[0].playerObj.transform.localPosition.z.ToString();
         SendPacketToServer(msg);
   }
-    public void sendPlayerMat()
-    {
-        //SendPacketToServer("x;" + user.id.ToString() + ";" + );
-    }
     public void SendCurrentMessage()
     {
         MsgToPopulate msgp = new MsgToPopulate();
